@@ -1,47 +1,35 @@
 exports.up = function(knex) {
   return knex.schema
-    .createTable('zoos', tbl => {
+    .createTable('recipes', tbl => {
       tbl.increments();
-      tbl.string('recipe_name', 128).notNullable();
+      tbl
+        .string('recipe_name', 128)
+        .notNullable()
+        .unique();
     })
     .createTable('ingredients', tbl => {
+      tbl.increments();
+      tbl.string('ingredient', 128).notNullable();
+      tbl.float('quantity').notNullable();
+      tbl.string('measuring_unit', 128).notNullable();
+    })
+    .createTable('instructions', tbl => {
       tbl.increments();
       tbl
         .integer('recipe_id')
         .unsigned()
         .notNullable()
         .references('id')
-        .inTable('recipe')
+        .inTable('recipes')
         .onDelete('CASCADE')
         .onUpdate('CASCADE');
-    })
-    .createTable('animals', tbl => {
-      tbl.increments();
-      tbl.string('animal_name', 128).notNullable();
-    })
-    .createTable('zoo_animals', tbl => {
-      tbl
-        .integer('zoo_id')
-        .unsigned()
-        .notNullable()
-        .references('id')
-        .inTable('zoos')
-        .onDelete('CASCADE')
-        .onUpdate('CASCADE');
-      tbl
-        .integer('animal_id')
-        .unsigned()
-        .notNullable()
-        .references('id')
-        .inTable('animals')
-        .onDelete('CASCADE')
-        .onUpdate('CASCADE');
-      tbl.primary(['zoo_id', 'animal_id']);
+      tbl.string('steps', 128).notNullable();
     });
 };
 
 exports.down = function(knex) {
   return knex.schema
+    .dropTableIfExists('wholeshabang')
     .dropTableIfExists('recipes')
     .dropTableIfExists('ingredients')
     .dropTableIfExists('instructions');
