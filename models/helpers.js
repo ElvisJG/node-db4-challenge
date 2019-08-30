@@ -6,7 +6,9 @@ module.exports = {
   getInstructions
 };
 
-function getRecipes() {}
+function getRecipes() {
+  return db('recipes');
+}
 
 function getShoppingList() {}
 
