@@ -9,6 +9,14 @@ exports.up = function(knex) {
     })
     .createTable('ingredients', tbl => {
       tbl.increments();
+      tbl
+        .integer('recipe_id')
+        .unsigned()
+        .notNullable()
+        .references('id')
+        .inTable('recipes')
+        .onDelete('CASCADE')
+        .onUpdate('CASCADE');
       tbl.string('ingredient', 128).notNullable();
       tbl.float('quantity').notNullable();
       tbl.string('measuring_unit', 128).notNullable();
