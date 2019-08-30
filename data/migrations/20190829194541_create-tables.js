@@ -9,6 +9,9 @@ exports.up = function(knex) {
     })
     .createTable('ingredients', tbl => {
       tbl.increments();
+      tbl.string('ingredient', 128).notNullable();
+      tbl.float('quantity').notNullable();
+      tbl.string('measuring_unit', 128).notNullable();
       tbl
         .integer('recipe_id')
         .unsigned()
@@ -17,9 +20,6 @@ exports.up = function(knex) {
         .inTable('recipes')
         .onDelete('CASCADE')
         .onUpdate('CASCADE');
-      tbl.string('ingredient', 128).notNullable();
-      tbl.float('quantity').notNullable();
-      tbl.string('measuring_unit', 128).notNullable();
     })
     .createTable('instructions', tbl => {
       tbl.increments();
@@ -37,7 +37,6 @@ exports.up = function(knex) {
 
 exports.down = function(knex) {
   return knex.schema
-    .dropTableIfExists('wholeshabang')
     .dropTableIfExists('recipes')
     .dropTableIfExists('ingredients')
     .dropTableIfExists('instructions');
